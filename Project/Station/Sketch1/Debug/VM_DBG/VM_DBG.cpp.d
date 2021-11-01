@@ -1,6 +1,6 @@
-C:\Users\zalukaev-s\AppData\Local\Temp\VMBuilds\Sketch1\pro_16MHzatmega328\Debug\VM_DBG\VM_DBG.cpp.o: \
- c:\program\ files\ (x86)\microsoft\ visual\ studio\2019\professional\common7\ide\extensions\v0m3gso5.bks\Micro\ Platforms\default\debuggers\VM_DBG\VM_DBG.cpp \
- c:\program\ files\ (x86)\microsoft\ visual\ studio\2019\professional\common7\ide\extensions\v0m3gso5.bks\Micro\ Platforms\default\debuggers\VM_DBG\VM_DBG.h \
+C:\Users\zaluk\AppData\Local\Temp\VMBuilds\Sketch1\mega_atmega2560\Debug\VM_DBG\VM_DBG.cpp.o: \
+ c:\program\ files\ (x86)\microsoft\ visual\ studio\2019\community\common7\ide\extensions\v0m3gso5.bks\Micro\ Platforms\default\debuggers\VM_DBG\VM_DBG.cpp \
+ c:\program\ files\ (x86)\microsoft\ visual\ studio\2019\community\common7\ide\extensions\v0m3gso5.bks\Micro\ Platforms\default\debuggers\VM_DBG\VM_DBG.h \
  C:\Program\ Files\ (x86)\Arduino\hardware\arduino\avr\cores\arduino/Arduino.h \
  C:\Program\ Files\ (x86)\Arduino\hardware\arduino\avr\cores\arduino/binary.h \
  C:\Program\ Files\ (x86)\Arduino\hardware\arduino\avr\cores\arduino/WCharacter.h \
@@ -11,5 +11,4 @@ C:\Users\zalukaev-s\AppData\Local\Temp\VMBuilds\Sketch1\pro_16MHzatmega328\Debug
  C:\Program\ Files\ (x86)\Arduino\hardware\arduino\avr\cores\arduino/Printable.h \
  C:\Program\ Files\ (x86)\Arduino\hardware\arduino\avr\cores\arduino/USBAPI.h \
  C:\Program\ Files\ (x86)\Arduino\hardware\arduino\avr\cores\arduino/Arduino.h \
- C:\Program\ Files\ (x86)\Arduino\hardware\arduino\avr\variants\eightanaloginputs/pins_arduino.h \
- c:\program\ files\ (x86)\arduino\hardware\arduino\avr\variants\standard\pins_arduino.h
+ C:\Program\ Files\ (x86)\Arduino\hardware\arduino\avr\variants\mega/pins_arduino.h
