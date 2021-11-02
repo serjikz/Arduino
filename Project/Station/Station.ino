@@ -1,13 +1,19 @@
 #include "src/BMP280Sensor.h"
+#include "src/AHT10Sensor.h"
 
 void setup() {
+    Wire.begin();
     Serial.begin(9600);
-    Serial.println(F("BMP280 test"));
     Sensors::BMP280.Init();
+    Sensors::AHT10.Init();
 }
 
 void loop() {
+    Serial.println(Sensors::BMP280.GetID());
     Serial.println(Sensors::BMP280.GetTemperature());
     Serial.println(Sensors::BMP280.GetPressure());
-    delay(4000);
+    Serial.println(Sensors::AHT10.GetID());
+    Serial.println(Sensors::AHT10.GetTemperature());
+    Serial.println(Sensors::AHT10.GetHumidity());
+    delay(1000);
 }

@@ -18,7 +18,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Main.ino" />
+    <None Include="Station.ino" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.Station.vsarduino.h">
@@ -28,6 +28,9 @@
       <Filter>Source Files\src</Filter>
     </ClInclude>
     <ClInclude Include="src\Sensor.h">
+      <Filter>Source Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AHT10Sensor.h">
       <Filter>Source Files\src</Filter>
     </ClInclude>
   </ItemGroup>

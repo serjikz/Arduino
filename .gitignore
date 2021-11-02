@@ -2,3 +2,4 @@
 /Project/Station/Release/**
 /Project/Station/.vs/**
 /Project/Station/__vm/**
+/Project/Station/__vm/.Station.vsarduino.h
