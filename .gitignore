@@ -1,2 +1,4 @@
-/Project/Station/Sketch1/Debug/**
+/Project/Station/Debug/**
+/Project/Station/Release/**
 /Project/Station/.vs/**
+/Project/Station/__vm/**
