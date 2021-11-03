@@ -30,7 +30,7 @@ public:
 
     String GetPressure() {
         if (_bmp && _inited) {
-            return "Pressure = " + String(BAR_KOEF * _bmp->readPressure()) + " bar";
+            return "Pressure = " + String(BAR_KOEF * _bmp->readPressure()) + " mm";
         }
         else {
             return Super::GetSensorNotInitializedMsg();
@@ -47,7 +47,7 @@ public:
         else {
             _inited = true;
             _bmp->setSampling(Adafruit_BMP280::MODE_NORMAL, // Режим работы
-                Adafruit_BMP280::SAMPLING_X2, // Точность изм. температуры
+                Adafruit_BMP280::SAMPLING_X16, // Точность изм. температуры
                 Adafruit_BMP280::SAMPLING_X16, // Точность изм. давления
                 Adafruit_BMP280::FILTER_X16, // Уровень фильтрации
                 Adafruit_BMP280::STANDBY_MS_4000); // Период просыпания, мСек

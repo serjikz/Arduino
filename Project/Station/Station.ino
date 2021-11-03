@@ -2,7 +2,6 @@
 #include "src/AHT10Sensor.h"
 
 void setup() {
-    Wire.begin();
     Serial.begin(9600);
     Sensors::BMP280.Init();
     Sensors::AHT10.Init();

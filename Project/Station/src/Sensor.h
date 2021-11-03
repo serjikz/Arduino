@@ -9,8 +9,8 @@ public:
 	virtual void Init() = 0;
 	const String& GetID() const;
 	String GetSensorNotInitializedMsg() const;
-protected:
 
+protected:
 	bool _inited;
 
 };
