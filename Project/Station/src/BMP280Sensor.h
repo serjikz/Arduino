@@ -21,7 +21,7 @@ public:
 
     String GetTemperature() {
         if (_bmp && _inited) {
-            return "Temperature = " + String(_bmp->readTemperature()) + " *C";
+            return String(_bmp->readTemperature());
         }
         else {
             return Super::GetSensorNotInitializedMsg();
@@ -30,7 +30,7 @@ public:
 
     String GetPressure() {
         if (_bmp && _inited) {
-            return "Pressure = " + String(BAR_KOEF * _bmp->readPressure()) + " mm";
+            return String(BAR_KOEF * _bmp->readPressure());
         }
         else {
             return Super::GetSensorNotInitializedMsg();

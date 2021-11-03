@@ -20,7 +20,7 @@ public:
         if (_aht_temp && _inited) {
             sensors_event_t temp;
             _aht_temp->getEvent(&temp);
-            return "Temperature = " + String(temp.temperature) + " *C";
+            return String(temp.temperature);
         }
         else {
             return Super::GetSensorNotInitializedMsg();
@@ -31,7 +31,7 @@ public:
         if (_aht_humidity && _inited) {
             sensors_event_t humidity;
             _aht_temp->getEvent(&humidity);
-            return "Humidity = " + String(humidity.relative_humidity) + " %";
+            return String(humidity.relative_humidity);
         }
         else {
             return Super::GetSensorNotInitializedMsg();
