@@ -12,13 +12,13 @@ void setup() {
 
 
 void loop() {
-    Serial.println(Sensors::BMP280.GetID());
+    /*Serial.println(Sensors::BMP280.GetID());
     Serial.println(Sensors::BMP280.GetTemperature());
     Serial.println(Sensors::BMP280.GetPressure());
     Serial.println(Sensors::AHT10.GetID());
     Serial.println(Sensors::AHT10.GetTemperature());
     Serial.println(Sensors::AHT10.GetHumidity());
-    Serial.println("Sending data to ESP");
-    Serial1.write("Hello#");
-    delay(1000);
+    Serial.println("Sending data to ESP");*/
+    Serial1.write("123456#");
+    delay(100);
 }
