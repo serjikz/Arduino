@@ -1,4 +1,5 @@
 #include "esphome.h"
+#include <ArduinoJson.h>
 
 class MegaUARTConnector : public PollingComponent, public UARTDevice, public sensor::Sensor {
 public:
@@ -17,36 +18,47 @@ public:
     void loop() override {
         while (available()) {
             char ch = read();
-            if (ch == '/') {
-                _temp = _dataBuf;
-                _dataBuf = "";
+            if (ch == '^') {
                 ch = read();
-            }
-            if (ch != '#') {
-                _dataBuf += ch;
+                while (ch != '#') {
+                    _dataBuf += ch;
+                    ch = read();
+                }
             } else {
-                _pressure = _dataBuf;
-                _dataBuf = "";
+                _temp = -1;
+                _pressure = -1;
                 return;
             }
+                DynamicJsonBuffer doc(kJsonDocSize);
+                JsonObject& root = doc.parseObject(_dataBuf);
+                if (root.size() > 0) {
+                    _temp = root["temp"].as<float>();
+                    _pressure = root["pressure"].as<float>();
+                    //_temp = -2;
+                    //_pressure = -2;
+                    _dataBuf = "";
+                } else {
+                   _temp = -3;
+                   _pressure = -3;
+                   _dataBuf = "";
+                }
         }
     }
   
     void update() override {
-        //publish_state(_data.toFloat());
-        bmp280TempSensor->publish_state(_temp.toFloat());
-        bmp280PressureSensor->publish_state(_pressure.toFloat());
+        bmp280TempSensor->publish_state(_temp);
+        bmp280PressureSensor->publish_state(_pressure);
     }
 
     Sensor* bmp280TempSensor;
     Sensor* bmp280PressureSensor;
 
 private:
-    String _data;
     String _dataBuf;
-    String _temp;
-    String _pressure;
+    float _temp;
+    float _pressure;
     static const int kDelay = 1000;
-
+    static const int kJsonDocSize = 200;
+    
   
 };
