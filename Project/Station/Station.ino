@@ -14,13 +14,12 @@ void setup() {
     Sensors::AHT10.Init();         
  }
 
-
 void loop() {
     jsonDoc.clear();
     jsonDoc["temp"] = Sensors::BMP280.GetTemperature();
     jsonDoc["pressure"] = Sensors::BMP280.GetPressure();
-    Serial1.write('^');
+    jsonDoc["humidity"] = Sensors::AHT10.GetHumidity();
     serializeJson(jsonDoc, Serial1);
-    Serial1.write('#');
+    Serial1.write('\n');
     delay(100);
 }

@@ -2,8 +2,14 @@
 /Project/Station/Release/**
 /Project/Station/.vs/**
 /Project/Station/__vm/**
+
 /Project/Station/__vm/.Station.vsarduino.h
 /Project/ESP8266/Debug/**
 /Project/ESP8266/Release/**
 /Project/ESP8266/.vs/**
 /Project/ESP8266/__vm/**
+
+/Project/Balcony/Debug/**
+/Project/Balcony/Release/**
+/Project/Balcony/.vs/**
+/Project/Balcony/__vm/**
