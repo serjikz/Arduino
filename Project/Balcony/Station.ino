@@ -2,10 +2,10 @@
 #include "src/BMP280Sensor.h"
 #include "src/AHT10Sensor.h"
 #include <ArduinoJson.h>
-
 #include <SPI.h>                                               // Подключаем библиотеку для работы с шиной SPI.
 #include <nRF24L01.h>                                          // Подключаем файл настроек из библиотеки RF24.
 #include <RF24.h>                                              // Подключаем библиотеку для работы с nRF24L01+.
+                  
 
 RF24 radio(9, 10);
 
