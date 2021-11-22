@@ -38,7 +38,7 @@ sensor:
   lambda: |-
     auto megaUART = new MegaUARTConnector(id(uart_bus));
     App.register_component(megaUART);
-    return {megaUART->bmp280TempSensor, megaUART->bmp280PressureSensor};
+    return {megaUART->bmp280TempSensor, megaUART->bmp280PressureSensor,  megaUART->aht10HumiditySensor};
 
   sensors:
   - name: "Temperature"
@@ -47,59 +47,7 @@ sensor:
   - name: "Pressure"
     unit_of_measurement: mm
     accuracy_decimals: 2
-    
-    
-
-    esphome:
-  name: main-esp
-  platform: ESP8266
-  board: esp01_1m
-  includes:
-    - TestComponent.h
-
-# Enable logging
-logger:
-  level: VERBOSE #makes uart stream available in esphome logstream
-  baud_rate: 0 #disable logging over uart
-
-# Enable Home Assistant API
-api:
-
-ota:
-  password: "4b770169f2f59a7e9f305942ba15c257"
-
-wifi:
-  ssid: "ASUS"
-  password: "02262017"
-
-  # Enable fallback hotspot (captive portal) in case wifi connection fails
-  ap:
-    ssid: "Main-Esp Fallback Hotspot"
-    password: "eEOh39GOrcCY"
-
-captive_portal:
-
-uart:
-  id: uart_bus
-  tx_pin: GPIO1
-  rx_pin: GPIO3
-  baud_rate: 9600
-
-sensor:
-- platform: custom
-  lambda: |-
-    auto megaUART = new MegaUARTConnector(id(uart_bus));
-    App.register_component(megaUART);
-    return {megaUART->bmp280TempSensor, megaUART->bmp280PressureSensor};
-
-  sensors:
-  - name: "Temperature"
-    unit_of_measurement: °C
+  - name: "Humidity"
+    unit_of_measurement: perc
     accuracy_decimals: 2
-  - name: "Pressure"
-    unit_of_measurement: mm
-    accuracy_decimals: 2
-    
-    
-
     
