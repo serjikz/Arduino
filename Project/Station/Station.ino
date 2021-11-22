@@ -1,31 +1,35 @@
-// MAIN STATION
+// MAIN RECEIVER
 
 #include <ArduinoJson.hpp>
-#include "src/BMP280Sensor.h"
-#include "src/AHT10Sensor.h"
 #include "src/NRF24Receiver.h"
-#include <ArduinoJson.h>                                            
+#include <printf.h>
+#include <ArduinoJson.h>    
 
+static const size_t GLOBAL_DELAY_TIME = 2000;
 StaticJsonDocument<200> jsonDoc;
 
 void setup() {
     Serial.begin(9600);
-    // UART
-    Serial1.begin(9600);
-    //
-    Sensors::BMP280.Init();
-    //Sensors::AHT10.Init();     
+    printf_begin();
     Radio::NRF24.Init();
     Radio::NRF24.AddPipeForListening(Radio::PIPE_0_ADDR);
     Radio::NRF24.StartListeningAll();
- }
+}
 
 void loop() {
+    if (Radio::NRF24.IsAvailable())
+    {
+        Radio::NRF24.ReceiveData();
+        Serial.println("From Balcony[0]: " + String(Radio::data[0]));
+        Serial.println("From Balcony[1]: " + String(Radio::data[1]));
+        Serial.println("From Balcony[2]: " + String(Radio::data[2]));
+        Serial.println("From Balcony[3]: " + String(Radio::data[3]));
+        Serial.println("From Balcony[4]: " + String(Radio::data[4]));
+    }
     jsonDoc.clear();
-    jsonDoc["temp"] = Sensors::BMP280.GetTemperature();
-    jsonDoc["pressure"] = Sensors::BMP280.GetPressure();
-    //jsonDoc["humidity"] = Sensors::AHT10.GetHumidity();
-    serializeJson(jsonDoc, Serial1);
-    Serial1.write('\n');
-    delay(1000);
+    jsonDoc["temp"] = Radio::data[0];
+    jsonDoc["pressure"] = Radio::data[1];
+    serializeJson(jsonDoc, Serial);
+    Serial.write('\n');
+    delay(GLOBAL_DELAY_TIME);
 }

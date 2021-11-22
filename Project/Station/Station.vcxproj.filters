@@ -33,7 +33,7 @@
     <ClInclude Include="src\AHT10Sensor.h">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="src\NRF24Module.h">
+    <ClInclude Include="src\NRF24Receiver.h">
       <Filter>Source Files\src</Filter>
     </ClInclude>
   </ItemGroup>

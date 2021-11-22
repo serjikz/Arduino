@@ -36,6 +36,9 @@
     <ClInclude Include="__vm\.Balcony.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\NRF24Transmitter.h">
+      <Filter>Source Files\src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sensor.cpp">

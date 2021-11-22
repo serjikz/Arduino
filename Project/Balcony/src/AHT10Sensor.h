@@ -16,25 +16,19 @@ public:
         , _ahtMain(&AHT10Adafruit)
     {}
 
-    String GetTemperature() {
+    float GetTemperature() {
         if (_aht_temp && _inited) {
             sensors_event_t temp;
             _aht_temp->getEvent(&temp);
-            return String(temp.temperature);
-        }
-        else {
-            return Super::GetSensorNotInitializedMsg();
+            return temp.temperature;
         }
     }
 
-    String GetHumidity() {
+    float GetHumidity() {
         if (_aht_humidity && _inited) {
             sensors_event_t humidity;
             _aht_temp->getEvent(&humidity);
-            return String(humidity.relative_humidity);
-        }
-        else {
-            return Super::GetSensorNotInitializedMsg();
+            return humidity.relative_humidity;
         }
     }
 
