@@ -9,6 +9,7 @@ public:
     {
         bmp280TempSensor = new Sensor();
         bmp280PressureSensor = new Sensor();
+        aht10HumiditySensor = new Sensor();
     }
 
     void setup() override {
@@ -18,45 +19,38 @@ public:
     void loop() override {
         while (available()) {
             char ch = read();
-            if (ch == '^') {
+            while (ch != '\n') {
+                _dataBuf += ch;
                 ch = read();
-                while (ch != '#') {
-                    _dataBuf += ch;
-                    ch = read();
-                }
-            } else {
-                _temp = -1;
-                _pressure = -1;
-                return;
             }
-                DynamicJsonBuffer doc(kJsonDocSize);
-                JsonObject& root = doc.parseObject(_dataBuf);
-                if (root.size() > 0) {
-                    _temp = root["temp"].as<float>();
-                    _pressure = root["pressure"].as<float>();
-                    //_temp = -2;
-                    //_pressure = -2;
-                    _dataBuf = "";
-                } else {
-                   _temp = -3;
-                   _pressure = -3;
-                   _dataBuf = "";
-                }
+            DynamicJsonBuffer doc(kJsonDocSize);
+            JsonObject& root = doc.parseObject(_dataBuf);
+            if (root.size() > 0) {
+                _temp = root["temp"].as<float>();
+                _pressure = root["pressure"].as<float>();
+                _humidity = root["humidity"].as<float>();
+                _dataBuf = "";
+            } else {
+                _dataBuf = "";
+            }
         }
     }
   
     void update() override {
         bmp280TempSensor->publish_state(_temp);
         bmp280PressureSensor->publish_state(_pressure);
+        aht10HumiditySensor->publish_state(_humidity);
     }
 
     Sensor* bmp280TempSensor;
     Sensor* bmp280PressureSensor;
+    Sensor* aht10HumiditySensor;
 
 private:
     String _dataBuf;
     float _temp;
     float _pressure;
+    float _humidity;
     static const int kDelay = 1000;
     static const int kJsonDocSize = 200;
     

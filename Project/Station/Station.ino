@@ -27,8 +27,9 @@ void loop() {
         Serial.println("From Balcony[4]: " + String(Radio::data[4]));
     }
     jsonDoc.clear();
-    jsonDoc["temp"] = Radio::data[0];
-    jsonDoc["pressure"] = Radio::data[1];
+    jsonDoc["temp"] = Radio::data[2];
+    jsonDoc["pressure"] = -1;
+    jsonDoc["humidity"] = Radio::data[3];
     serializeJson(jsonDoc, Serial);
     Serial.write('\n');
     delay(GLOBAL_DELAY_TIME);
