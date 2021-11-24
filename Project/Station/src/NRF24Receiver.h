@@ -45,7 +45,7 @@ namespace Radio {
 
     static const float HASH = 3.1415926f;
     static const float EPS = 0.001f;
-    static const short int MAX_RECEIVING_ATTEMPTS = 20000;
+    static const unsigned short int MAX_RECEIVING_ATTEMPTS = 60000;
     static int receivngAttempts = 0;
 }
 
