@@ -27,7 +27,7 @@ public:
     float GetHumidity() {
         if (_aht_humidity && _inited) {
             sensors_event_t humidity;
-            _aht_temp->getEvent(&humidity);
+            _aht_humidity->getEvent(&humidity);
             return humidity.relative_humidity;
         }
     }

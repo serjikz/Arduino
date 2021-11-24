@@ -17,20 +17,33 @@ void setup() {
 }
 
 void loop() {
+    bool received = false;
+    Radio::receivngAttempts++;
     if (Radio::NRF24.IsAvailable())
-    {
+    {        
         Radio::NRF24.ReceiveData();
-        Serial.println("From Balcony[0]: " + String(Radio::data[0]));
-        Serial.println("From Balcony[1]: " + String(Radio::data[1]));
-        Serial.println("From Balcony[2]: " + String(Radio::data[2]));
-        Serial.println("From Balcony[3]: " + String(Radio::data[3]));
-        Serial.println("From Balcony[4]: " + String(Radio::data[4]));
+        if (abs(Radio::receivedData[0] - Radio::HASH) < Radio::EPS) {            
+            Serial.println("Packets received at attempt: " + String(Radio::receivngAttempts));
+            Serial.println("From Balcony[0]: " + String(Radio::receivedData[0]));
+            Serial.println("From Balcony[1]: " + String(Radio::receivedData[1]));
+            Serial.println("From Balcony[2]: " + String(Radio::receivedData[2]));
+            Serial.println("From Balcony[3]: " + String(Radio::receivedData[3]));
+            Serial.println("From Balcony[4]: " + String(Radio::receivedData[4]));
+           //Serial.println("From Balcony[5]: " + String(Radio::receivedData[5]));
+           // Serial.println("From Balcony[6]: " + String(Radio::receivedData[6]));
+            Radio::CopyDataToJson();
+            Radio::ClearReceivedData();            
+            received = true;
+            Radio::receivngAttempts = 0;
+        }       
     }
-    jsonDoc.clear();
-    jsonDoc["temp"] = Radio::data[2];
-    jsonDoc["pressure"] = -1;
-    jsonDoc["humidity"] = Radio::data[3];
-    serializeJson(jsonDoc, Serial);
-    Serial.write('\n');
-    delay(GLOBAL_DELAY_TIME);
+    if (Radio::receivngAttempts > Radio::MAX_RECEIVING_ATTEMPTS || received) {
+        jsonDoc.clear();
+        jsonDoc["temp"] = Radio::jsonData[3];
+        jsonDoc["pressure"] = -1;
+        jsonDoc["humidity"] = Radio::jsonData[4];
+        serializeJson(jsonDoc, Serial);
+        Serial.write('\n');
+        Radio::receivngAttempts = 0;
+    }    
 }

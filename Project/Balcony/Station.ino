@@ -2,7 +2,7 @@
 #include "src/AHT10Sensor.h"
 
 #include <printf.h>
-
+static const size_t GLOBAL_DELAY_TIME = 100;
 
 void setup() {
 	Serial.begin(9600);
@@ -12,11 +12,11 @@ void setup() {
 }
 
 void loop() {
-	delay(2000);
-	Radio::data[0] = 0;
-	Radio::data[1] = 2;
-	Radio::data[2] = Sensors::AHT10.GetTemperature();
-	Radio::data[3] = Sensors::AHT10.GetHumidity();
-	Radio::data[4] = 0;
+	delay(GLOBAL_DELAY_TIME);
+	Radio::data[0] = Radio::HASH;
+	Radio::data[1] = Radio::ModulePosition::Balcony;
+	Radio::data[2] = Radio::SensorsCount::Two;
+	Radio::data[3] = Sensors::AHT10.GetTemperature();
+	Radio::data[4] = Sensors::AHT10.GetHumidity();
 	Radio::NRF24.TransmitData();
 }

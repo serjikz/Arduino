@@ -17,7 +17,36 @@ namespace Radio {
         Garage
     };
 
-    float data[5];   
+    enum SensorsCount {
+        One = 1,
+        Two = 2,
+        Three,
+        Four,
+        Five,
+        Six
+    };
+
+    static const int SIZE = 5;
+
+    float receivedData[SIZE];
+    float jsonData[SIZE];
+
+    void CopyDataToJson() {
+        for (size_t i = 0; i < SIZE; i++) {
+            jsonData[i] = receivedData[i];
+        }
+    }
+
+    void ClearReceivedData() {
+        for (size_t i = 0; i < SIZE; i++) {
+            receivedData[i] = 0.f;
+        }
+    }
+
+    static const float HASH = 3.1415926f;
+    static const float EPS = 0.001f;
+    static const short int MAX_RECEIVING_ATTEMPTS = 20000;
+    static int receivngAttempts = 0;
 }
 
 RF24 RF24_Global(Radio::PIN_CE, Radio::PIN_CSN);
@@ -83,8 +112,8 @@ public:
         }
     }
 
-    void ReceiveData() {
-        _nrf24->read(&Radio::data, sizeof(Radio::data));
+    void ReceiveData() {        
+        _nrf24->read(&Radio::receivedData, sizeof(Radio::receivedData));
     }
 
 private:

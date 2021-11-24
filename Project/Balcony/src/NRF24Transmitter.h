@@ -17,7 +17,20 @@ namespace Radio {
         Garage
     };   
 
-    float data[5];
+    enum SensorsCount {
+        One = 1,
+        Two = 2,
+        Three,
+        Four,
+        Five,
+        Six
+    };
+
+
+    static const int SIZE = 5;
+    float data[SIZE];
+
+    static const float HASH = 3.1415926f;
 }
 
 RF24 RF24_Global(Radio::PIN_CSN, Radio::PIN_CE);
@@ -41,7 +54,7 @@ public:
             _inited = true;
             Serial.println("Inited " + GetID());
             _nrf24->setChannel(Radio::CHANNEL); 
-            _nrf24->setDataRate(RF24_1MBPS); 
+            _nrf24->setDataRate(RF24_1MBPS);
             _nrf24->setCRCLength(RF24_CRC_8);
             _nrf24->setPALevel(RF24_PA_MAX); 
             _nrf24->setAutoAck(false);       // автоответ
@@ -56,8 +69,14 @@ public:
     }
 
     void TransmitData() {
-        _nrf24->write(Radio::data, sizeof(Radio::data));
-        Serial.println("Data transmitted, size = " + String(sizeof(Radio::data)));
+        bool transmitted = _nrf24->write(Radio::data, sizeof(Radio::data));
+        if (transmitted)
+        {
+            Serial.println("Data transmitted, size = " + String(sizeof(Radio::data)));
+        }
+        else {
+            Serial.println("Data is not transmitted");
+        }
     }
 
     String GetID() const {
