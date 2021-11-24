@@ -109,6 +109,7 @@
     <ClInclude Include="src\AHT10Sensor.h" />
     <ClInclude Include="src\BMP280Sensor.h" />
     <ClInclude Include="src\NRF24Receiver.h" />
+    <ClInclude Include="src\NRFDataParser.h" />
     <ClInclude Include="src\Sensor.h" />
     <ClInclude Include="__vm\.Station.vsarduino.h" />
   </ItemGroup>

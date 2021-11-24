@@ -2,53 +2,6 @@
 #include <nRF24L01.h>                                          
 #include <RF24.h>    
 
-namespace Radio {
-    static const int PIN_CE = 9;
-    static const int PIN_CSN = 10;
-    static const uint8_t CHANNEL = 0x6f;
-
-    static const uint32_t PIPE_0_ADDR = 111156789;
-    static const uint64_t PIPE_1_ADDR = 0xC4C5C6C7F1;
-    static const uint64_t PIPE_2_ADDR = 0xC4C5C6C7F2;
-    
-    enum ModulePosition {
-        Balcony = 0,
-        Hall = 1,
-        Garage
-    };
-
-    enum SensorsCount {
-        One = 1,
-        Two = 2,
-        Three,
-        Four,
-        Five,
-        Six
-    };
-
-    static const int SIZE = 5;
-
-    float receivedData[SIZE];
-    float jsonData[SIZE];
-
-    void CopyDataToJson() {
-        for (size_t i = 0; i < SIZE; i++) {
-            jsonData[i] = receivedData[i];
-        }
-    }
-
-    void ClearReceivedData() {
-        for (size_t i = 0; i < SIZE; i++) {
-            receivedData[i] = 0.f;
-        }
-    }
-
-    static const float HASH = 3.1415926f;
-    static const float EPS = 0.001f;
-    static const unsigned short int MAX_RECEIVING_ATTEMPTS = 60000;
-    static int receivngAttempts = 0;
-}
-
 RF24 RF24_Global(Radio::PIN_CE, Radio::PIN_CSN);
 
 class NRF24Receiver {
