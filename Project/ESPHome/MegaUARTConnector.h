@@ -3,6 +3,10 @@
 
 class MegaUARTConnector : public PollingComponent, public UARTDevice, public sensor::Sensor {
 public:
+    const String TEMP_TAG = String("temperature");
+    const String PRESSURE_TAG = String("pressure");
+    const String HUMIDITY_TAG = String("humidity"); 
+    
     MegaUARTConnector(UARTComponent *parent) 
         : PollingComponent(kDelay), 
           UARTDevice(parent)
@@ -26,9 +30,9 @@ public:
             DynamicJsonBuffer doc(kJsonDocSize);
             JsonObject& root = doc.parseObject(_dataBuf);
             if (root.size() > 0) {
-                _temp = root["temp"].as<float>();
-                _pressure = root["pressure"].as<float>();
-                _humidity = root["humidity"].as<float>();
+                _temp = root[TEMP_TAG].as<float>();
+                _pressure = root[PRESSURE_TAG].as<float>();
+                _humidity = root[HUMIDITY_TAG].as<float>();
                 _dataBuf = "";
             } else {
                 _dataBuf = "";
