@@ -2,8 +2,16 @@ esphome:
   name: main-esp
   platform: ESP8266
   board: esp01_1m
+    
   includes:
+    - Adafruit_Unified_Sensor/Adafruit_Sensor.h
+    - Adafruit_BusIO/Adafruit_SPIDevice.h
+    - Adafruit_BusIO/Adafruit_I2CDevice.h
+    - Adafruit_BusIO/Adafruit_BusIO_Register.h
+    - Adafruit_AHT10/Adafruit_AHT10.h
     - TestComponent.h
+    - AHT10Sensor.h
+    
 
 # Enable logging
 logger:
@@ -50,4 +58,7 @@ sensor:
   - name: "Humidity"
     unit_of_measurement: perc
     accuracy_decimals: 2
+    
+    
+
     

@@ -33,7 +33,7 @@ namespace Radio {
 
     const float HASH = 3.1415926f;
     const float EPS = 0.001f;
-    const unsigned short int MAX_RECEIVING_ATTEMPTS = 60000;
+    const int MAX_RECEIVING_ATTEMPTS = 60000;
     int receivingAttempts = 0; 
 
     bool DataIsValid() {
