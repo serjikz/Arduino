@@ -5,10 +5,15 @@ esphome:
     
   includes:
     - Adafruit_Unified_Sensor/Adafruit_Sensor.h
+    - Adafruit_Unified_Sensor/Adafruit_Sensor.cpp
     - Adafruit_BusIO/Adafruit_SPIDevice.h
+    - Adafruit_BusIO/Adafruit_SPIDevice.cpp
     - Adafruit_BusIO/Adafruit_I2CDevice.h
+    - Adafruit_BusIO/Adafruit_I2CDevice.cpp
     - Adafruit_BusIO/Adafruit_BusIO_Register.h
+    - Adafruit_BusIO/Adafruit_BusIO_Register.cpp
     - Adafruit_AHT10/Adafruit_AHT10.h
+    - Adafruit_AHT10/Adafruit_AHT10.cpp
     - TestComponent.h
     - AHT10Sensor.h
     
@@ -35,6 +40,12 @@ wifi:
 
 captive_portal:
 
+i2c:
+  sda: GPIO4  
+  scl: GPIO5  
+  scan: true
+  frequency: 100kHz
+
 uart:
   id: uart_bus
   tx_pin: GPIO1
@@ -46,19 +57,23 @@ sensor:
   lambda: |-
     auto megaUART = new MegaUARTConnector(id(uart_bus));
     App.register_component(megaUART);
-    return {megaUART->bmp280TempSensor, megaUART->bmp280PressureSensor,  megaUART->aht10HumiditySensor};
+    return {megaUART->aht10TempBalcony, megaUART->aht10HumidityBalcony, megaUART->aht10TempHall, megaUART->aht10HumidityHall};
 
   sensors:
-  - name: "Temperature"
+  - name: "Temperature (b)"
     unit_of_measurement: °C
     accuracy_decimals: 2
-  - name: "Pressure"
-    unit_of_measurement: mm
-    accuracy_decimals: 2
-  - name: "Humidity"
+  - name: "Humidity (b)"
     unit_of_measurement: perc
     accuracy_decimals: 2
     
+  - name: "Temperature (h)"
+    unit_of_measurement: °C
+    accuracy_decimals: 2
+  - name: "Humidity (h)"
+    unit_of_measurement: perc
+    accuracy_decimals: 2
+
     
 
     
