@@ -26,7 +26,7 @@ namespace Radio {
         Six
     };
 
-    const int DATA_ARRAY_SIZE = 5;
+    const int DATA_ARRAY_SIZE = 7;
 
     float receivedData[DATA_ARRAY_SIZE];
     float jsonData[DATA_ARRAY_SIZE];

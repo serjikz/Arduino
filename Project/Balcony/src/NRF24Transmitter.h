@@ -27,7 +27,7 @@ namespace Radio {
     };
 
 
-    static const int SIZE = 5;
+    static const int SIZE = 7;
     float data[SIZE];
 
     static const float HASH = 3.1415926f;

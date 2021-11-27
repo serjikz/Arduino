@@ -39,6 +39,9 @@
     <ClInclude Include="src\NRF24Transmitter.h">
       <Filter>Source Files\src</Filter>
     </ClInclude>
+    <ClInclude Include="src\DS18B20Sensor.h">
+      <Filter>Source Files\src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sensor.cpp">
