@@ -45,6 +45,7 @@ namespace JSON {
     static const unsigned short int JSON_DOC_SIZE = 200;
     StaticJsonDocument<JSON_DOC_SIZE> doc;
     const String TEMP_TAG = String("temperature");
+    const String TEMP_STREET_TAG = String("temperature.street");
     const String PRESSURE_TAG = String("pressure");
     const String HUMIDITY_TAG = String("humidity");    
 }
@@ -65,27 +66,39 @@ namespace Radio {
 
     class BalconyNRFDataParser : public NRFDataParser {
         float _temperature;
+        float _temperatureStreet;
         float _humidity;
     public:
 
         void SendNewJsonToESP() {
             _temperature = Radio::receivedData[3];
             _humidity = Radio::receivedData[4];
+            _temperatureStreet = Radio::receivedData[5];
             JSON::doc.clear();
             JSON::doc[JSON::TEMP_TAG] = _temperature;
-            JSON::doc[JSON::PRESSURE_TAG] = -1;
             JSON::doc[JSON::HUMIDITY_TAG] = _humidity;
+            JSON::doc[JSON::TEMP_STREET_TAG] = _temperatureStreet;
             serializeJson(JSON::doc, Serial);
             Serial.write('\n');
+            PrintDebugInfo();
         }
 
         void SendOldJsonToESP() {
             JSON::doc.clear();
             JSON::doc[JSON::TEMP_TAG] = _temperature;
-            JSON::doc[JSON::PRESSURE_TAG] = -1;
             JSON::doc[JSON::HUMIDITY_TAG] = _humidity;
+            JSON::doc[JSON::TEMP_STREET_TAG] = _temperatureStreet;
             serializeJson(JSON::doc, Serial);
             Serial.write('\n');
+        }
+
+        void PrintDebugInfo() {
+            Serial.println("From Balcony[0]:(hash): " + String(Radio::receivedData[0]));
+            Serial.println("From Balcony[1]:(modulePos): " + String(Radio::receivedData[1]));
+            Serial.println("From Balcony[2]:(sensorsCount): " + String(Radio::receivedData[2]));
+            Serial.println("From Balcony[3]:(temp): " + String(Radio::receivedData[3]));
+            Serial.println("From Balcony[4]:(humidity): " + String(Radio::receivedData[4]));
+            Serial.println("From Balcony[5]:(temp.street): " + String(Radio::receivedData[5]));
         }
     };
 }

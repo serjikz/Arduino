@@ -15,29 +15,21 @@ void setup() {
 }
 
 void loop() {
-    bool received = false;
     Radio::receivingAttempts++;
     if (Radio::NRF24.IsAvailable())
     {
         Radio::NRF24.ReceiveData();
         if (Radio::DataIsValid()) {           
-            Serial.println("From Balcony[0]: " + String(Radio::receivedData[0]));
-            Serial.println("From Balcony[1]: " + String(Radio::receivedData[1]));
-            Serial.println("From Balcony[2]: " + String(Radio::receivedData[2]));
-            Serial.println("From Balcony[3]: " + String(Radio::receivedData[3]));
-            Serial.println("From Balcony[4]: " + String(Radio::receivedData[4]));
-            received = true;
+            Serial.println("Data received at attempt: " + String(Radio::receivingAttempts));
+            Serial.println("Sending new JSON");
+            nrfBalconyDataParser.SendNewJsonToESP();
+            nrfBalconyDataParser.ClearReceivedData();
+            Radio::receivingAttempts = 0;
+            delay(GLOBAL_DELAY_TIME);
         }
     }
-
-    if (received) {
-        Serial.println("Data received at attempt: " + String(Radio::receivingAttempts));
-        Serial.println("Sending new JSON");
-        nrfBalconyDataParser.SendNewJsonToESP();
-        nrfBalconyDataParser.ClearReceivedData();
-        Radio::receivingAttempts = 0;
-        delay(GLOBAL_DELAY_TIME);
-    } else if (Radio::receivingAttempts > Radio::MAX_RECEIVING_ATTEMPTS) {
+      
+   if (Radio::receivingAttempts > Radio::MAX_RECEIVING_ATTEMPTS) {
         Serial.println("Data did not received, send previous values to JSON");
         nrfBalconyDataParser.SendOldJsonToESP();
         Radio::receivingAttempts = 0;

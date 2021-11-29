@@ -3,8 +3,8 @@
 #include <RF24.h>    
 
 namespace Radio {
-    static const int PIN_CE = 10;
-    static const int PIN_CSN = 9;
+    static const int PIN_CE = 9;
+    static const int PIN_CSN = 10;
     static const uint8_t CHANNEL = 0x6f;
 
     static const uint32_t PIPE_0_ADDR = 111156789;
@@ -33,7 +33,7 @@ namespace Radio {
     static const float HASH = 3.1415926f;
 }
 
-RF24 RF24_Global(Radio::PIN_CSN, Radio::PIN_CE);
+RF24 RF24_Global(Radio::PIN_CE, Radio::PIN_CSN);
 
 class NRF24Transmitter {
 public:
@@ -73,6 +73,12 @@ public:
         if (transmitted)
         {
             Serial.println("Data transmitted, size = " + String(sizeof(Radio::data)));
+            Serial.print("Data: " + String(Radio::data[0]) + " ");
+            Serial.print(String(Radio::data[1]) + " ");
+            Serial.print(String(Radio::data[2]) + " ");
+            Serial.print(String(Radio::data[3]) + " ");
+            Serial.print(String(Radio::data[4]) + " ");
+            Serial.println(String(Radio::data[5]));
         }
         else {
             Serial.println("Data is not transmitted");

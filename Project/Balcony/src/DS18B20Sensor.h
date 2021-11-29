@@ -30,11 +30,12 @@ public:
         _ds18b20->begin();
         delay(INIT_DELAY);
         if (_ds18b20->getDeviceCount() > 0) {
+            _inited = true;
             Serial.println("Inited: " + GetID());
         }
         else {
-            Serial.println("Not inited " + GetID());
             _inited = false;
+            Serial.println("Not inited " + GetID());
         }
     }
 
