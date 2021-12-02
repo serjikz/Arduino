@@ -13,3 +13,8 @@
 /Project/Balcony/Release/**
 /Project/Balcony/.vs/**
 /Project/Balcony/__vm/**
+
+/Project/Kitchen/Debug/**
+/Project/Kitchen/Release/**
+/Project/Kitchen/.vs/**
+/Project/Kitchen/__vm/**
