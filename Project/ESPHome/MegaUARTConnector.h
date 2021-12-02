@@ -13,6 +13,7 @@ public:
     {
         aht10TempBalcony = new Sensor();
         aht10HumidityBalcony = new Sensor();
+        ds18b20TempBalconyStreet = new Sensor();
         
         aht10TempHall = new Sensor();
         aht10HumidityHall = new Sensor();
@@ -20,12 +21,13 @@ public:
     }
 
     void setup() override {
-        if (_aht10Main.begin()) {
+        if (_aht10HallMain.begin()) {
             _aht10HallInited = true;
             delay(AHT_INIT_DELAY);
-            _aht_temp = _aht10Main.getTemperatureSensor();
-            _aht_humidity = _aht10Main.getHumiditySensor();
+            _aht_temp = _aht10HallMain.getTemperatureSensor();
+            _aht_humidity = _aht10HallMain.getHumiditySensor();
         } 
+        _ahtHallTimer = millis();
     }
   
     void update() override {
@@ -38,9 +40,10 @@ public:
             DynamicJsonBuffer doc(JSON_DOC_SIZE);
             JsonObject& root = doc.parseObject(_dataBuf);
             if (root.size() > 0) {
-                ESP_LOGD("UART", "json is valid");
+                //ESP_LOGD("UART", "json is valid");
                 _temp = root[TEMP_TAG].as<float>();
                 _humidity = root[HUMIDITY_TAG].as<float>();
+                _tempStreet = root[TEMP_STREET_TAG].as<float>();
                 _dataBuf = "";
             } else {
                 _dataBuf = "";
@@ -49,42 +52,53 @@ public:
         
         aht10TempBalcony->publish_state(_temp);
         aht10HumidityBalcony->publish_state(_humidity);
+        ds18b20TempBalconyStreet->publish_state(_tempStreet);
         
-        if (_aht10HallInited) {
-            sensors_event_t temp;
-            _aht_temp->getEvent(&temp);
-            aht10TempHall->publish_state(temp.temperature);
-        
-            sensors_event_t humidity;
-            _aht_humidity->getEvent(&humidity);
-            aht10HumidityHall->publish_state(humidity.relative_humidity);
-        } else {
-            aht10TempHall->publish_state(-1);
-            aht10HumidityHall->publish_state(-1);
+        if (millis() - _ahtHallTimer >= AHT_DELAY) {   
+            _ahtHallTimer = millis();              
+            if (_aht10HallInited) {
+                sensors_event_t temp;
+                _aht_temp->getEvent(&temp);
+                aht10TempHall->publish_state(temp.temperature);
+            
+                sensors_event_t humidity;
+                _aht_humidity->getEvent(&humidity);
+                aht10HumidityHall->publish_state(humidity.relative_humidity);
+            } else {
+                aht10TempHall->publish_state(-1);
+                aht10HumidityHall->publish_state(-1);
+            }
         }
+        delay(RADIO_DELAY);
     }
  
 public:
     Sensor* aht10TempBalcony;
     Sensor* aht10HumidityBalcony;
+    Sensor* ds18b20TempBalconyStreet;
     
     Sensor* aht10TempHall;
     Sensor* aht10HumidityHall;
-
+    
 private:
-    Adafruit_AHT10 _aht10Main;
+    Adafruit_AHT10 _aht10HallMain;
     Adafruit_Sensor* _aht_humidity;
     Adafruit_Sensor* _aht_temp;
     bool _aht10HallInited = false;
     
     String _dataBuf;
     float _temp;
+    float _tempStreet;
     float _humidity;
-    const int GLOBAL_DELAY = 100;
+    int _ahtHallTimer;
+    const int RADIO_DELAY = 10;
     const int JSON_DOC_SIZE = 200;
     const int AHT_INIT_DELAY = 200;
+    const int AHT_DELAY = 1000;
+    const int GLOBAL_DELAY = 10;
     const String TEMP_TAG = String("temperature");
     const String PRESSURE_TAG = String("pressure");
     const String HUMIDITY_TAG = String("humidity"); 
+    const String TEMP_STREET_TAG = String("temperature.street");
   
 };
