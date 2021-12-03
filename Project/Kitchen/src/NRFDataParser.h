@@ -35,9 +35,21 @@ namespace Radio {
     const float EPS = 0.001f;
     const int MAX_RECEIVING_ATTEMPTS = 1000000;
     int receivingAttempts = 0; 
+   
+    unsigned long receivingPauseTimer = millis();
+    const int RECEIVING_DELAY = 5000;
 
     bool DataIsValid() {
         return abs(Radio::receivedData[0] - Radio::HASH) < Radio::EPS;
+    }
+
+    bool ReadyToGetNextData() {
+        return millis() - receivingPauseTimer >= RECEIVING_DELAY;
+    }
+
+    void ResetDataReceivingProcess() {
+        receivingPauseTimer = millis();
+        receivingAttempts = 0;
     }
 }
 

@@ -15,26 +15,32 @@ void setup() {
     Radio::NRF24.Init();
     Radio::NRF24.AddPipeForListening(Radio::PIPE_0_ADDR);
     Radio::NRF24.StartListeningAll();    
+    Radio::receivingPauseTimer = millis();
 }
 
 void loop() {
-    Radio::receivingAttempts++;
-    if (Radio::NRF24.IsAvailable())
+    Display::LCD1602.Update();
+    Display::LCD1602.ShowStoragedData();
+    if (Radio::NRF24.IsAvailable() && Radio::ReadyToGetNextData())
     {
+        Radio::receivingAttempts++;
         Radio::NRF24.ReceiveData();
-        if (Radio::DataIsValid()) {           
+        if (Radio::DataIsValid()) {
             Serial.println("[I] Data received at attempt: " + String(Radio::receivingAttempts));           
             nrfBalconyDataParser.SaveReceivedData();
             nrfBalconyDataParser.PrintDebugInfo();           
-            Radio::receivingAttempts = 0;
-            Display::LCD1602.Print(0, 0, nrfBalconyDataParser.GetDisplayTempBalcony());
-            Display::LCD1602.Print(0, 1, nrfBalconyDataParser.GetDisplayTempStreet());
-            delay(GLOBAL_DELAY_TIME);
+            float vals[3];
+            vals[0] = nrfBalconyDataParser.GetTemperature();
+            vals[1] = nrfBalconyDataParser.GetTemperatureOnStreet();
+            vals[2] = nrfBalconyDataParser.GetHumidity();
+            Display::LCD1602.UpdateValues(vals);
+            Radio::ResetDataReceivingProcess();
         }
     }
       
    if (Radio::receivingAttempts >= Radio::MAX_RECEIVING_ATTEMPTS) {
         Serial.println("[E] Data did not received, " + String(Radio::receivingAttempts) + " attempts failed");
         Radio::receivingAttempts = 0;
-    }
+   }
+       
 }
