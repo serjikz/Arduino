@@ -1,9 +1,11 @@
+// Balcony transmitter
+
 #include "src/NRF24Transmitter.h"
 #include "src/AHT10Sensor.h"
 #include "src/DS18B20Sensor.h"
 
 #include <printf.h>
-static const size_t GLOBAL_DELAY_TIME = 100;
+static const size_t GLOBAL_DELAY_TIME = 0;
 
 void setup() {
 	Serial.begin(9600);

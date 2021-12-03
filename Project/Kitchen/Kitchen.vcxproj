@@ -108,6 +108,7 @@
   <ItemGroup>
     <ClInclude Include="src\AHT10Sensor.h" />
     <ClInclude Include="src\BMP280Sensor.h" />
+    <ClInclude Include="src\LCD1602Display.h" />
     <ClInclude Include="src\NRF24Receiver.h" />
     <ClInclude Include="src\NRFDataParser.h" />
     <ClInclude Include="src\RadioBroadcastScanner.h" />

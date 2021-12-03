@@ -42,6 +42,9 @@
     <ClInclude Include="src\Sensor.h">
       <Filter>Source Files\src</Filter>
     </ClInclude>
+    <ClInclude Include="src\LCD1602Display.h">
+      <Filter>Source Files\src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sensor.cpp">

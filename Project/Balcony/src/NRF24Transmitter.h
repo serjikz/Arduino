@@ -54,12 +54,12 @@ public:
             _inited = true;
             Serial.println("Inited " + GetID());
             _nrf24->setChannel(Radio::CHANNEL); 
-            _nrf24->setDataRate(RF24_1MBPS);
+            _nrf24->setDataRate(RF24_250KBPS);
             _nrf24->setCRCLength(RF24_CRC_8);
             _nrf24->setPALevel(RF24_PA_MAX); 
             _nrf24->setAutoAck(false);       // автоответ
             _nrf24->powerUp();               // включение или пониженное потребление powerDown - powerUp
-            _nrf24->stopListening();  //радиоэфир не слушаем, только передача    
+            _nrf24->stopListening();         //радиоэфир не слушаем, только передача    
             _nrf24->openWritingPipe(address);
             _nrf24->printDetails();
         }
@@ -69,20 +69,14 @@ public:
     }
 
     void TransmitData() {
-        bool transmitted = _nrf24->write(Radio::data, sizeof(Radio::data));
-        if (transmitted)
-        {
-            Serial.println("Data transmitted, size = " + String(sizeof(Radio::data)));
-            Serial.print("Data: " + String(Radio::data[0]) + " ");
-            Serial.print(String(Radio::data[1]) + " ");
-            Serial.print(String(Radio::data[2]) + " ");
-            Serial.print(String(Radio::data[3]) + " ");
-            Serial.print(String(Radio::data[4]) + " ");
-            Serial.println(String(Radio::data[5]));
-        }
-        else {
-            Serial.println("Data is not transmitted");
-        }
+        bool transmitted = _nrf24->writeFast(Radio::data, sizeof(Radio::data));
+        Serial.println("Data transmitted fast, size = " + String(sizeof(Radio::data)));
+        Serial.print("Data: " + String(Radio::data[0]) + " ");
+        Serial.print(String(Radio::data[1]) + " ");
+        Serial.print(String(Radio::data[2]) + " ");
+        Serial.print(String(Radio::data[3]) + " ");
+        Serial.print(String(Radio::data[4]) + " ");
+        Serial.println(String(Radio::data[5]));
     }
 
     String GetID() const {

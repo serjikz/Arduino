@@ -3,7 +3,7 @@
 #include "src/NRF24Receiver.h"
 #include <printf.h>
 
-const size_t GLOBAL_DELAY_TIME = 100;
+const size_t GLOBAL_DELAY_TIME = 3000;
 Radio::BalconyNRFDataParser nrfBalconyDataParser;
 
 void setup() {
@@ -20,8 +20,8 @@ void loop() {
     {
         Radio::NRF24.ReceiveData();
         if (Radio::DataIsValid()) {           
-            Serial.println("Data received at attempt: " + String(Radio::receivingAttempts));
-            Serial.println("Sending new JSON");
+            Serial.println("[I] Data received at attempt: " + String(Radio::receivingAttempts));
+            Serial.println("[I] Sending new JSON");
             nrfBalconyDataParser.SendNewJsonToESP();
             nrfBalconyDataParser.ClearReceivedData();
             Radio::receivingAttempts = 0;
@@ -30,7 +30,7 @@ void loop() {
     }
       
    if (Radio::receivingAttempts > Radio::MAX_RECEIVING_ATTEMPTS) {
-        Serial.println("Data did not received, send previous values to JSON");
+        Serial.println("[E] Data did not received, send previous values to JSON");
         nrfBalconyDataParser.SendOldJsonToESP();
         Radio::receivingAttempts = 0;
     }

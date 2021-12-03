@@ -24,7 +24,7 @@ public:
             _inited = true;
             Serial.println("Inited " + GetID());
             _nrf24->setPALevel(RF24_PA_MAX); 
-            _nrf24->setDataRate(RF24_1MBPS); 
+            _nrf24->setDataRate(RF24_250KBPS); 
             _nrf24->setCRCLength(RF24_CRC_8); 
             _nrf24->setChannel(Radio::CHANNEL);         
             _nrf24->setAutoAck(false);
@@ -36,7 +36,7 @@ public:
     }
 
     void AddPipeForListening(uint64_t address) {
-        _nrf24->openReadingPipe(_pipesCount, Radio::PIPE_0_ADDR);
+        _nrf24->openReadingPipe(_pipesCount, address);
         _pipesCount++;
         Serial.println("NRF24Receiver: Added pipe #" + String(_pipesCount));
     }

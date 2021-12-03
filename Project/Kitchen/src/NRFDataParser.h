@@ -33,7 +33,7 @@ namespace Radio {
 
     const float HASH = 3.1415926f;
     const float EPS = 0.001f;
-    const int MAX_RECEIVING_ATTEMPTS = 60000;
+    const int MAX_RECEIVING_ATTEMPTS = 1000000;
     int receivingAttempts = 0; 
 
     bool DataIsValid() {
@@ -92,6 +92,18 @@ namespace Radio {
 
         float GetTemperatureOnStreet() {
             return _temperatureStreet;
+        }
+
+        String GetDisplayTempBalcony() {
+            return String("T balc " + String(_temperature) + String(char(223)) + String("C   "));
+        }
+
+        String GetDisplayTempStreet() {
+            return String("T str  " + String(_temperatureStreet) + String(char(223)) + String("C"));
+        }
+
+        String GetDisplayHumidityBalcony() {
+            return String("H balc  " + String(_humidity) + String("%"));
         }
     };
 }
