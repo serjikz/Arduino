@@ -3,6 +3,7 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
+// 5V 
 OneWire DS18B20Wire(PIND2);
 DallasTemperature DS18B20Main(&DS18B20Wire);
 

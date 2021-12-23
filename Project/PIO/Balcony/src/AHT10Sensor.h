@@ -20,16 +20,24 @@ public:
         if (_aht_temp && _inited) {
             sensors_event_t temp;
             _aht_temp->getEvent(&temp);
-            return temp.temperature;
+            float newTempVal = temp.temperature;
+            if (abs(newTempVal) < MAX) {
+                _lastTemperatureVal = newTempVal;
+            }
         }
+        return _lastTemperatureVal;
     }
 
     float GetHumidity() {
         if (_aht_humidity && _inited) {
             sensors_event_t humidity;
             _aht_humidity->getEvent(&humidity);
-            return humidity.relative_humidity;
+            float newHumidityVal = humidity.relative_humidity;
+            if (abs(newHumidityVal) < MAX) {
+                _lastHumidityVal = newHumidityVal;
+            } 
         }
+        return _lastHumidityVal;
     }
 
     virtual void Init() {
@@ -52,6 +60,11 @@ private:
     Adafruit_AHT10* _ahtMain;
     Adafruit_Sensor* _aht_humidity;
     Adafruit_Sensor* _aht_temp;
+
+    float _lastHumidityVal = 0.f;
+    float _lastTemperatureVal = 0.f;
+    const float MAX = 100; 
+
 };
 
 namespace Sensors {

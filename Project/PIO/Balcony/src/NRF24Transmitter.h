@@ -57,9 +57,9 @@ public:
             _nrf24->setDataRate(RF24_250KBPS);
             _nrf24->setCRCLength(RF24_CRC_8);
             _nrf24->setPALevel(RF24_PA_MAX); 
-            _nrf24->setAutoAck(false);       // ���������
-            _nrf24->powerUp();               // ��������� ��� ���������� ����������� powerDown - powerUp
-            _nrf24->stopListening();         //��������� �� �������, ������ ��������    
+            _nrf24->setAutoAck(false);       
+            _nrf24->powerUp();               
+            _nrf24->stopListening();         
             _nrf24->openWritingPipe(address);
             _nrf24->printDetails();
         }
@@ -73,7 +73,7 @@ public:
             return;
         }
         _nrf24->writeFast(Radio::data, sizeof(Radio::data));
-        Serial.println("Data transmitted fast, size = " + String(sizeof(Radio::data)));
+        Serial.println("Data transmitted fast, size = " + String(static_cast<int>(sizeof(Radio::data))));
         Serial.print("Data: " + String(Radio::data[0]) + " ");
         Serial.print(String(Radio::data[1]) + " ");
         Serial.print(String(Radio::data[2]) + " ");
@@ -94,10 +94,10 @@ public:
     }
 
 private:
-    RF24* _nrf24;   
     String _id;
+    RF24* _nrf24;   
     bool _inited;
-    static const int CAPACITOR_CHARGING_TIME = 1000;
+    const int CAPACITOR_CHARGING_TIME = 1000;
 };
 
 namespace Radio {

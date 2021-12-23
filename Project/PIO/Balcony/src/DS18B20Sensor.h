@@ -20,8 +20,12 @@ public:
     float GetTemperature() {
         if (_ds18b20 && _inited) {
             _ds18b20->requestTemperatures();
-            return _ds18b20->getTempCByIndex(0);
+            float newVal = _ds18b20->getTempCByIndex(0);
+            if (abs(newVal) < MAX) {
+                _lastVal = newVal;
+            }            
         }
+        return _lastVal;
     }
 
     virtual void Init() {
@@ -43,6 +47,8 @@ public:
 private:
     DallasTemperature* _ds18b20;
     const size_t INIT_DELAY = 100;
+    const float MAX = 100;
+    float _lastVal = 0.f;
 };
 
 namespace Sensors {

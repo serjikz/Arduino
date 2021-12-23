@@ -5,7 +5,7 @@
 #include "DS18B20Sensor.h"
 
 #include <printf.h>
-static const size_t GLOBAL_DELAY_TIME = 3000;
+static const size_t GLOBAL_DELAY_TIME = 5000;
 
 void setup()
 {

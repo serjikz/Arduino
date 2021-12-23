@@ -35,9 +35,21 @@ namespace Radio {
     const float EPS = 0.001f;
     const int MAX_RECEIVING_ATTEMPTS = 1000000;
     int receivingAttempts = 0; 
+   
+    unsigned long receivingPauseTimer = millis();
+    const int RECEIVING_DELAY = 5000;
 
     bool DataIsValid() {
         return abs(Radio::receivedData[0] - Radio::HASH) < Radio::EPS;
+    }
+
+    bool ReadyToGetNextData() {
+        return millis() - receivingPauseTimer >= RECEIVING_DELAY;
+    }
+
+    void ResetDataReceivingProcess() {
+        receivingPauseTimer = millis();
+        receivingAttempts = 0;
     }
 }
 
@@ -53,9 +65,6 @@ namespace JSON {
 namespace Radio {
     class NRFDataParser {
     public:
-
-        virtual void SendNewJsonToESP() = 0;
-        virtual void SendOldJsonToESP() = 0;
  
         void ClearReceivedData() {
             for (size_t i = 0; i < Radio::DATA_ARRAY_SIZE; i++) {
@@ -70,28 +79,12 @@ namespace Radio {
         float _humidity;
     public:
 
-        void SendNewJsonToESP() {
+        void SaveReceivedData() {
             _temperature = Radio::receivedData[3];
             _humidity = Radio::receivedData[4];
-            _temperatureStreet = Radio::receivedData[5];
-            JSON::doc.clear();
-            JSON::doc[JSON::TEMP_TAG] = _temperature;
-            JSON::doc[JSON::HUMIDITY_TAG] = _humidity;
-            JSON::doc[JSON::TEMP_STREET_TAG] = _temperatureStreet;
-            serializeJson(JSON::doc, Serial);
-            Serial.write('\n');
-            PrintDebugInfo();
+            _temperatureStreet = Radio::receivedData[5];          
         }
-
-        void SendOldJsonToESP() {
-            JSON::doc.clear();
-            JSON::doc[JSON::TEMP_TAG] = _temperature;
-            JSON::doc[JSON::HUMIDITY_TAG] = _humidity;
-            JSON::doc[JSON::TEMP_STREET_TAG] = _temperatureStreet;
-            serializeJson(JSON::doc, Serial);
-            Serial.write('\n');
-        }
-
+        
         void PrintDebugInfo() {
             Serial.println("From Balcony[0]:(hash): " + String(Radio::receivedData[0]));
             Serial.println("From Balcony[1]:(modulePos): " + String(Radio::receivedData[1]));
@@ -99,6 +92,30 @@ namespace Radio {
             Serial.println("From Balcony[3]:(temp): " + String(Radio::receivedData[3]));
             Serial.println("From Balcony[4]:(humidity): " + String(Radio::receivedData[4]));
             Serial.println("From Balcony[5]:(temp.street): " + String(Radio::receivedData[5]));
+        }
+
+        float GetTemperature() {
+            return _temperature;
+        }
+
+        float GetHumidity() {
+            return _humidity;
+        }
+
+        float GetTemperatureOnStreet() {
+            return _temperatureStreet;
+        }
+
+        String GetDisplayTempBalcony() {
+            return String("T balc " + String(_temperature) + String(char(223)) + String("C   "));
+        }
+
+        String GetDisplayTempStreet() {
+            return String("T str  " + String(_temperatureStreet) + String(char(223)) + String("C"));
+        }
+
+        String GetDisplayHumidityBalcony() {
+            return String("H balc  " + String(_humidity) + String("%"));
         }
     };
 }
