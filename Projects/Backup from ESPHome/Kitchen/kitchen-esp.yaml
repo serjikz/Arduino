@@ -4,12 +4,15 @@ esphome:
   board: esp01_1m
     
   libraries:
+    - ArduinoJson
     - SPI
+    - Wire
+    - RF24
     
   includes:
-    - ../libs/Adafruit_BusIO/
-    - ../libs/Adafruit_Unified_Sensor/
     - ../libs/Adafruit_AHT10/
+    - ../libs/Adafruit_BusIO/
+    - kitchen-esp/KitchenCustomSensor.h
     
 # Enable logging
 logger:
@@ -38,9 +41,18 @@ i2c:
   scl: GPIO5  
   scan: false
   frequency: 100kHz
+  
+sensor:
+- platform: custom
+  lambda: |-
+    auto kitchenSensor = new KitchenCustomSensor();
+    App.register_component(kitchenSensor);
+    return {kitchenSensor->aht10TempHall, kitchenSensor->aht10HumidityHall};
 
-uart:
-  id: uart_bus
-  tx_pin: GPIO1
-  rx_pin: GPIO3
-  baud_rate: 9600
+  sensors:
+  - name: "Temperature (h)"
+    unit_of_measurement: °C
+    accuracy_decimals: 2
+  - name: "Humidity (h)"
+    unit_of_measurement: perc
+    accuracy_decimals: 2

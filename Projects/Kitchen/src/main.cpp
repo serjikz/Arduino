@@ -1,8 +1,8 @@
 // KITCHEN RECEIVER
 #include <Wire.h> 
-#include "src/NRFDataParser.h"
-#include "src/NRF24Receiver.h"
-#include "src/LCD1602Display.h"
+#include "NRFDataParser.h"
+#include "NRF24Receiver.h"
+#include "LCD1602Display.h"
 #include <printf.h>
 
 const size_t GLOBAL_DELAY_TIME = 2000;
