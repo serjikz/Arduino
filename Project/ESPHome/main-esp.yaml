@@ -3,20 +3,16 @@ esphome:
   platform: ESP8266
   board: esp01_1m
     
-  includes:
-    - Adafruit_Unified_Sensor/Adafruit_Sensor.h
-    - Adafruit_Unified_Sensor/Adafruit_Sensor.cpp
-    - Adafruit_BusIO/Adafruit_SPIDevice.h
-    - Adafruit_BusIO/Adafruit_SPIDevice.cpp
-    - Adafruit_BusIO/Adafruit_I2CDevice.h
-    - Adafruit_BusIO/Adafruit_I2CDevice.cpp
-    - Adafruit_BusIO/Adafruit_BusIO_Register.h
-    - Adafruit_BusIO/Adafruit_BusIO_Register.cpp
-    - Adafruit_AHT10/Adafruit_AHT10.h
-    - Adafruit_AHT10/Adafruit_AHT10.cpp
-    - TestComponent.h
-    - AHT10Sensor.h
+  libraries:
+    - libs
+    - ArduinoJson
+    - SPI
     
+  includes:
+    - ../libs/Adafruit_AHT10/
+    - ../libs/Adafruit_BusIO/
+    - main-esp/src/TestComponent.h
+
 
 # Enable logging
 logger:
@@ -43,7 +39,7 @@ captive_portal:
 i2c:
   sda: GPIO4  
   scl: GPIO5  
-  scan: true
+  scan: false
   frequency: 100kHz
 
 uart:
@@ -57,7 +53,7 @@ sensor:
   lambda: |-
     auto megaUART = new MegaUARTConnector(id(uart_bus));
     App.register_component(megaUART);
-    return {megaUART->aht10TempBalcony, megaUART->aht10HumidityBalcony, megaUART->aht10TempHall, megaUART->aht10HumidityHall};
+    return {megaUART->aht10TempBalcony, megaUART->aht10HumidityBalcony, megaUART->aht10TempHall, megaUART->aht10HumidityHall, megaUART->ds18b20TempBalconyStreet};
 
   sensors:
   - name: "Temperature (b)"
@@ -73,6 +69,11 @@ sensor:
   - name: "Humidity (h)"
     unit_of_measurement: perc
     accuracy_decimals: 2
+    
+  - name: "Temperature (s)"
+    unit_of_measurement: °C
+    accuracy_decimals: 2
+    
 
     
 
