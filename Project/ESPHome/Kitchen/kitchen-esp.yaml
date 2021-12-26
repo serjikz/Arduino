@@ -1,0 +1,46 @@
+esphome:
+  name: kitchen-esp
+  platform: ESP8266
+  board: esp01_1m
+    
+  libraries:
+    - SPI
+    
+  includes:
+    - ../libs/Adafruit_BusIO/
+    - ../libs/Adafruit_Unified_Sensor/
+    - ../libs/Adafruit_AHT10/
+    
+# Enable logging
+logger:
+  level: VERBOSE #makes uart stream available in esphome logstream
+  baud_rate: 0 #disable logging over uart
+  
+# Enable Home Assistant API
+api:
+
+ota:
+  password: "979f69d74d6592803c3be9f89b432f37"
+
+wifi:
+  ssid: "ASUS"
+  password: "02262017"
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Kitchen-Esp Fallback Hotspot"
+    password: "5IXTRUYdAXVH"
+
+captive_portal:
+
+i2c:
+  sda: GPIO4  
+  scl: GPIO5  
+  scan: false
+  frequency: 100kHz
+
+uart:
+  id: uart_bus
+  tx_pin: GPIO1
+  rx_pin: GPIO3
+  baud_rate: 9600
