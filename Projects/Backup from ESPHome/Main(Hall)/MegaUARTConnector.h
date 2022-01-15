@@ -1,103 +1,49 @@
-#include "esphome.h"
-#include <ArduinoJson.h>
+esphome:
+  name: balcony-esp
 
-class MegaUARTConnector : public PollingComponent, public UARTDevice, public Sensor {
-public:
-   
-    MegaUARTConnector(UARTComponent *parent) 
-        : PollingComponent(GLOBAL_DELAY), 
-          UARTDevice(parent)
-    {
-        aht10TempBalcony = new Sensor();
-        aht10HumidityBalcony = new Sensor();
-        ds18b20TempBalconyStreet = new Sensor();
-        
-        aht10TempHall = new Sensor();
-        aht10HumidityHall = new Sensor();
-        _aht10HallInited = false;
-    }
+esp8266:
+  board: esp01_1m
 
-    void setup() override {
-        if (_aht10HallMain.begin()) {
-            _aht10HallInited = true;
-            delay(AHT_INIT_DELAY);
-            _aht_temp = _aht10HallMain.getTemperatureSensor();
-            _aht_humidity = _aht10HallMain.getHumiditySensor();
-        } 
-        _ahtHallTimer = millis();
-    }
+# Enable logging
+logger:
+  level: VERBOSE #makes uart stream available in esphome logstream
+  baud_rate: 0 #disable logging over uart
+
+# Enable Home Assistant API
+api:
+
+ota:
+  password: "d89274316948774714468e5159a94059"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Balcony-Esp Fallback Hotspot"
+    password: "SUA0lKujujub"
+
+captive_portal:
+
+i2c:
+  sda: GPIO4  
+  scl: GPIO5  
+  scan: false
+  frequency: 100kHz
   
-    void update() override {
-        while (available()) {
-            char ch = read();
-            while (ch != '\n') {
-                _dataBuf += ch;
-                ch = read();
-            }
-            DeserializationError error = deserializeJson(_doc, _dataBuf);
-            if (!error) {
-                //ESP_LOGD("UART", "json is valid");
-                _temp = _doc[TEMP_TAG].as<float>();
-                _humidity = _doc[HUMIDITY_TAG].as<float>();
-                _tempStreet = _doc[TEMP_STREET_TAG].as<float>();
-                _dataBuf = "";
-            } else {
-                _dataBuf = "";
-            }
-        }
-        
-        aht10TempBalcony->publish_state(_temp);
-        aht10HumidityBalcony->publish_state(_humidity);
-        ds18b20TempBalconyStreet->publish_state(_tempStreet);
-        
-       if (millis() - _ahtHallTimer >= AHT_DELAY) {   
-            _ahtHallTimer = millis();              
-            if (_aht10HallInited) {
-                sensors_event_t temp;
-                _aht_temp->getEvent(&temp);
-                aht10TempHall->publish_state(temp.temperature);
-            
-                sensors_event_t humidity;
-                _aht_humidity->getEvent(&humidity);
-                aht10HumidityHall->publish_state(humidity.relative_humidity);
-            } else {
-                aht10TempHall->publish_state(-1);
-                aht10HumidityHall->publish_state(-1);
-            }
-        }
-        delay(GLOBAL_DELAY);
-    }
- 
-public:
-    Sensor* aht10TempBalcony;
-    Sensor* aht10HumidityBalcony;
-    Sensor* ds18b20TempBalconyStreet;
+dallas:
+ - pin: GPIO2
+
+sensor:
+  - platform: aht10
+    temperature:
+      name: "Balcony Temperature"
+    humidity:
+      name: "Balcony Humidity"
+    update_interval: 10s
     
-    Sensor* aht10TempHall;
-    Sensor* aht10HumidityHall;
-
-private:
-
-    StaticJsonDocument<200> _doc;
-    Adafruit_AHT10 _aht10HallMain;
-    Adafruit_Sensor* _aht_humidity;
-    Adafruit_Sensor* _aht_temp;
-    bool _aht10HallInited = false;
-
-    
-    String _dataBuf;
-    float _temp;
-    float _tempStreet;
-    float _humidity;
-    int _ahtHallTimer;
-    const int RADIO_DELAY = 10;
-
-    const int AHT_INIT_DELAY = 200;
-    const int AHT_DELAY = 5000;
-    const int GLOBAL_DELAY = 20;
-    const String TEMP_TAG = String("temperature");
-    const String PRESSURE_TAG = String("pressure");
-    const String HUMIDITY_TAG = String("humidity"); 
-    const String TEMP_STREET_TAG = String("temperature.street");
-  
-};
+  - platform: dallas
+    address: 0x1c0000031edd2a28
+    name: "Street Temperature"
+    update_interval: 10s
