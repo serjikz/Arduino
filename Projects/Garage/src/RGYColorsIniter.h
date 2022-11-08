@@ -1,6 +1,6 @@
 #pragma once
 
-// Class is needed to show device initialization
+// Class is needed to show a device initialization
 class RGYColorsIniter {
 
 	enum State {
@@ -65,9 +65,12 @@ public:
 					}
 				break;
 				case State::GreenBlink:
-					if (millis() - _blinkStartTime >= BLINK_GREEN_DT) {
-						digitalWrite(_greenPin, LOW);
-						_state = State::None;
+					if (_isStartEffectCompleted) 
+					{
+						if (millis() - _blinkStartTime >= BLINK_GREEN_DT) {
+							digitalWrite(_greenPin, LOW);
+							_state = State::None;
+						}
 					}
 				break;
 				default:

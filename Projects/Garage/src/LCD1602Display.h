@@ -30,9 +30,15 @@ namespace Display {
             _lcdMain->print(Display::LOADING_WORD);
         }
 
-        void Print(size_t charPos, size_t rowNumber, const String str) {
+        void Clear() 
+        {
             if (_inited) {
                 _lcdMain->clear();
+            }
+        }
+
+        void Print(size_t charPos, size_t rowNumber, const String str) {
+            if (_inited) {
                 _lcdMain->setCursor(charPos, rowNumber);
                 _lcdMain->print(str);
             }

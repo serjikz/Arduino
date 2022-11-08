@@ -4,16 +4,14 @@
 #include <SPI.h>
 #include <Adafruit_AHT10.h>
 
-Adafruit_AHT10 AHT10Adafruit;
-
 class AHT10Sensor : public Sensor {
     typedef Sensor Super;
 
 public:
 
-    AHT10Sensor(String id)
-        :Super(id)
-        , _ahtMain(&AHT10Adafruit)
+    AHT10Sensor(Adafruit_AHT10* ahtSensor, String id)
+        : Super(id)
+        , _ahtMain(ahtSensor)
     {}
 
     String GetTemperature() {
@@ -60,6 +58,3 @@ private:
     Adafruit_Sensor* _aht_temp;
 };
 
-namespace Sensors {
-    AHT10Sensor AHT10("AHT10");
-}
