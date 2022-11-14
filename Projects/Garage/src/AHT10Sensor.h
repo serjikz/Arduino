@@ -14,7 +14,8 @@ public:
         , _ahtMain(ahtSensor)
     {}
 
-    String GetTemperature() {
+    String GetTemperature() 
+    {
         if (_aht_temp && _inited) {
             sensors_event_t temp;
             _aht_temp->getEvent(&temp);
@@ -25,7 +26,8 @@ public:
         }
     }
 
-    String GetHumidity() {
+    String GetHumidity() 
+    {
         if (_aht_humidity && _inited) {
             sensors_event_t humidity;
             _aht_humidity->getEvent(&humidity);
@@ -36,8 +38,10 @@ public:
         }
     }
 
-    virtual void Init() {
+    virtual void Init() override 
+    {
         if (!_ahtMain) {
+             Serial.println("Check connection " + GetID());
             return;
         }
         if (!_ahtMain->begin()) {

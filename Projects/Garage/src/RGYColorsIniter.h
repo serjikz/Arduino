@@ -65,12 +65,10 @@ public:
 					}
 				break;
 				case State::GreenBlink:
-					if (_isStartEffectCompleted) 
+					if (millis() - _blinkStartTime >= BLINK_GREEN_DT)
 					{
-						if (millis() - _blinkStartTime >= BLINK_GREEN_DT) {
-							digitalWrite(_greenPin, LOW);
-							_state = State::None;
-						}
+						digitalWrite(_greenPin, LOW);
+						_state = State::None;
 					}
 				break;
 				default:
@@ -86,9 +84,12 @@ public:
 
 	void BlinkGreenLight() 
 	{
-		_state = State::GreenBlink;
-		_blinkStartTime = millis();
-		digitalWrite(_greenPin, HIGH);
+		if (_isStartEffectCompleted) 
+		{
+			_state = State::GreenBlink;
+			_blinkStartTime = millis();
+			digitalWrite(_greenPin, HIGH);
+		}
 	}
 
 protected:

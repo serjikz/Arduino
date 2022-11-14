@@ -1,5 +1,13 @@
 {
     "files.associations": {
-        "locale": "cpp"
+        "locale": "cpp",
+        "associative_base": "cpp",
+        "deque": "cpp",
+        "initializer_list": "cpp",
+        "list": "cpp",
+        "serstream": "cpp",
+        "vector": "cpp",
+        "array": "cpp",
+        "iterator": "cpp"
     }
 }
