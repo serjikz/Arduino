@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include "ScioSense_ENS160.h" 
 #include <LCD1602Display.h>
 #include <RGYColorsIniter.h>
 #include <printf.h>
@@ -13,7 +14,7 @@ void setup()
     Serial.begin(9600);
     Wire.begin();
     printf_begin();
-    Display::LCD1602.Clear();
+    Display::LCD1602.Init();
     rgyIniter.Start();
 }
 
