@@ -27,10 +27,15 @@ void DisplaySensorData()
     Serial.println(ensAht2x.GetHumidity());
     rgyDiodsInformer.BlinkGreenLight();
 
-    String vals[2];
+    ensAht2x.Measure();
+    String vals[6];
     vals[0] = ensAht2x.GetTemperature();
     vals[1] = ensAht2x.GetHumidity();
-    Display::LCD1602.Clear();
+    vals[2] = ensAht2x.GetAQI();
+    vals[3] = ensAht2x.GetAQI500();
+    vals[4] = ensAht2x.GetTVOC();
+    vals[5] = ensAht2x.GeteC02();
+
     Display::LCD1602.UpdateValues(vals);
 }
 
@@ -40,6 +45,15 @@ void ShowErrorState()
     if (Display::LCD1602.IsInited()) {
         Display::LCD1602.Clear();
         Display::LCD1602.ShowErrMsg();
+    }
+}
+
+void CheckDataIsDanger()
+{
+    if (ensAht2x.IsDataDangerous()) {
+        rgyDiodsInformer.StartAlarm();
+    } else {
+        rgyDiodsInformer.TryStopAlarm();
     }
 }
 
@@ -53,6 +67,7 @@ void loop()
         time = millis();        
         if (ensAht2x.IsInited()) {
            DisplaySensorData();
+           CheckDataIsDanger();
         } else {
             ShowErrorState();
         }

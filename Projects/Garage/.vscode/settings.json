@@ -9,5 +9,6 @@
         "vector": "cpp",
         "array": "cpp",
         "iterator": "cpp"
-    }
+    },
+    "editor.fontSize": 16
 }
